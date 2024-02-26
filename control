@@ -1,0 +1,9 @@
+Package: com.bhackel.YTTapToSeek
+Name: YTTapToSeek
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Adds single tap to jump anywhere in video
+Maintainer: bhackel
+Author: bhackel
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)
