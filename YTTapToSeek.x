@@ -8,7 +8,13 @@ NSBundle *YTTTS_getTweakBundle();
 
 
 %group YTTTS_Tweak
-    // TODO
+    %hook YTInlinePlayerBarContainerView
+        - (void)didPressScrubber:(id)arg1 {
+            %orig;
+            YTMainAppVideoPlayerOverlayViewController *c = [self.delegate valueForKey:@"_delegate"];
+            
+        }
+    %end
 %end
 
 

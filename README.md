@@ -20,3 +20,24 @@ I started looking around for a method that would do the conversion for me since 
 
 #### Next steps
 I need to find a way to run some custom method whenever there is an update to `UITapGestureRecognizer`
+
+I looked around on the Apple documentation and found that there is something called an `action` method that is called whenever the gesture is recognized. I read on the Jailbreak discord that this can be found in an IVar called `_targets`, but no such IVar exists for me. However, in the description field of the gesture recognizer, I found that the `action` variable is set to `didPressScrubber` and it has some other attribute called `target` set to `YTInlinePlayerBarContainerView`. I then found this view and the `didPressScrubber` method within it. This was my target to hook.
+
+Now that I am hooking the `YTInlinePlayerBarContainerView`, I did not know how to call the `seekToTime` method in the YTPlayerViewController class. However, after looking at a few open-source tweaks, I found PoomSmart's YouQuality tweak and how it is able to access the `YTMainAppVideoPlayerOverlayViewController` class, which is not the same but will hopefully get me there. [Code here](https://github.com/PoomSmart/YouQuality/blob/a853ceee99e6b9c13d7a68e5cb7e4a02ee3da3d2/Tweak.x#L148-L155)
+
+```objc
+%hook YTInlinePlayerBarContainerView
+...
+%new(v@:@)
+- (void)didPressYouQuality:(id)arg {
+    YTMainAppVideoPlayerOverlayViewController *c = [self.delegate valueForKey:@"_delegate"];
+    [c didPressVideoQuality:arg];
+    [self updateYouQualityButton:nil];
+}
+%end
+```
+
+From this code, I understood that I needed to look in the instance variables to essentially walk through the inheritance structure to get to the controller that I wanted. The target controller with the `seekToTime` method is in the `YTPlayerViewController` class. I found that the `YTMainAppVideoPlayerOverlayViewController` class has a `@property UIViewController *parentViewController` instance variable that contains the `YTPlayerViewController` that I want, so following that path should work.
+
+Recall that I also needed the `YTInlinePlayerBarContainerView` class to get the `scrubRangeForScrubX` method. This is easily accessible from the `YTInlineScrubGestureView` through the `@property UIView *superview` instance variable.
+

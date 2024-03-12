@@ -10,7 +10,7 @@
 #define LOCALIZED_STRING(s) [bundle localizedStringForKey:s value:nil table:nil]
 
 
-// YTTapToSeek
+// YTTapToSeek Headers
 // TODO
 
 
