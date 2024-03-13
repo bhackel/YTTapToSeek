@@ -11,10 +11,19 @@
 
 
 // YTTapToSeek Headers
-// TODO
+@interface YTInlinePlayerBarContainerView
+- (void)didPressScrubber:(id)arg1
+@end
+
+@interface YTMainAppVideoPlayerOverlayViewController : UIViewController
+@end
+
+@interface YTPlayerViewController : UIViewController
+- (void)seekToTime:(double)time;
+@end
 
 
-// Youtube Settings
+// Headers for adding to Youtube Settings
 @interface YTSettingsCell : UICollectionViewCell
 @end
 

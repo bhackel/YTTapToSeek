@@ -15,7 +15,7 @@ NSBundle *YTTTS_getTweakBundle();
             if (sender.state == UIGestureRecognizerStateEnded) {
                 // Get access to the seekToTime method
                 YTMainAppVideoPlayerOverlayViewController *mainAppController = [self.delegate valueForKey:@"_delegate"];
-                YTPlayerViewController *playerViewController = [mainAppController valueForKey:@"parentViewController"];
+                YTPlayerViewController *playerViewController = mainAppController.parentViewController;
                 // Get the X position of this tap from arg1
                 CGFloat x = [arg1 locationInView:arg1.view].x;
                 // Get the associated timestamp using scrubRangeForScrubX

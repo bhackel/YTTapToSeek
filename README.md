@@ -38,7 +38,7 @@ Now that I am hooking the `YTInlinePlayerBarContainerView`, I did not know how t
 ```
 
 From this code, I understood that I needed to look in the instance variables to essentially walk through the inheritance structure to get to the controller that I wanted. We can see that this code snippet first accesses the `self.delegate` property, then accesses the `_delegate` ivar of that object.
-It seems like when I want to access a "property", then I should use the dot notation, and when I want to use an "IVar", then I should use the `valueForKey` notation
+It seems like when I want to access a "property", then I should use the dot notation, and when I want to use an "IVar", then I should use the `valueForKey` notation.
 
 The target controller with the `seekToTime` method is in the `YTPlayerViewController` class. I found that the `YTMainAppVideoPlayerOverlayViewController` class has a `@property UIViewController *parentViewController` instance variable that contains the `YTPlayerViewController` that I want, so following that path should work.~~
 
