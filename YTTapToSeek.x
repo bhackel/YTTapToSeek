@@ -11,18 +11,18 @@ NSBundle *YTTTS_getTweakBundle();
     %hook YTInlinePlayerBarContainerView
         - (void)didPressScrubber:(id)arg1 {
             %orig;
-            // Apple documentation states to check for ended
-            if (sender.state == UIGestureRecognizerStateEnded) {
-                // Get access to the seekToTime method
-                YTMainAppVideoPlayerOverlayViewController *mainAppController = [self.delegate valueForKey:@"_delegate"];
-                YTPlayerViewController *playerViewController = mainAppController.parentViewController;
-                // Get the X position of this tap from arg1
-                CGFloat x = [arg1 locationInView:arg1.view].x;
-                // Get the associated timestamp using scrubRangeForScrubX
-                double timestamp = [self scrubRangeForScrubX:x];
-                // Jump to the timestamp
-                [playerViewController seekToTime:timestamp];
-            }
+            
+            // // Get access to the seekToTime method
+            // YTMainAppVideoPlayerOverlayViewController *mainAppController = [self.delegate valueForKey:@"_delegate"];
+            // YTPlayerViewController *playerViewController = [mainAppController valueForKey:@"parentViewController"];
+            // // Get the X position of this tap from arg1
+            // UIGestureRecognizer *gestureRecognizer = (UIGestureRecognizer *)arg1;
+            // CGPoint location = [gestureRecognizer locationInView:gestureRecognizer.view];
+            // CGFloat x = location.x;
+            // // Get the associated timestamp using scrubRangeForScrubX
+            // double timestamp = [self scrubRangeForScrubX:x];
+            // // Jump to the timestamp
+            // [playerViewController seekToTime:timestamp];
         }
     %end
 %end

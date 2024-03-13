@@ -12,7 +12,9 @@
 
 // YTTapToSeek Headers
 @interface YTInlinePlayerBarContainerView
-- (void)didPressScrubber:(id)arg1
+@property (nonatomic, weak, readwrite) id delegate;
+- (void)didPressScrubber:(id)arg1;
+- (CGFloat)scrubRangeForScrubX:(CGFloat)arg1;
 @end
 
 @interface YTMainAppVideoPlayerOverlayViewController : UIViewController
