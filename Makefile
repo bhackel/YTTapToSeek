@@ -7,7 +7,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = YTTapToSeek
 
-$(TWEAK_NAME)_FILES = YTTapToSeek.x YTTapToSeekSettings.x
+$(TWEAK_NAME)_FILES = YTTapToSeek.x
 $(TWEAK_NAME)_CFLAGS = -fobjc-arc
 $(TWEAK_NAME)_FRAMEWORKS = UIKit
 

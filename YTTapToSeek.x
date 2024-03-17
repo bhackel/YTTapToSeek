@@ -3,52 +3,30 @@
 #import "YTTapToSeek.h"
 
 
-void YTTTS_showSnackBar(NSString *text);
-NSBundle *YTTTS_getTweakBundle();
-
-
 %group YTTTS_Tweak
     %hook YTInlinePlayerBarContainerView
         - (void)didPressScrubber:(id)arg1 {
             %orig;
-            
-            // // Get access to the seekToTime method
-            // YTMainAppVideoPlayerOverlayViewController *mainAppController = [self.delegate valueForKey:@"_delegate"];
-            // YTPlayerViewController *playerViewController = [mainAppController valueForKey:@"parentViewController"];
-            // // Get the X position of this tap from arg1
-            // UIGestureRecognizer *gestureRecognizer = (UIGestureRecognizer *)arg1;
-            // CGPoint location = [gestureRecognizer locationInView:gestureRecognizer.view];
-            // CGFloat x = location.x;
-            // // Get the associated timestamp using scrubRangeForScrubX
-            // double timestamp = [self scrubRangeForScrubX:x];
-            // // Jump to the timestamp
-            // [playerViewController seekToTime:timestamp];
+            // Get access to the seekToTime method
+            YTMainAppVideoPlayerOverlayViewController *mainAppController = [self.delegate valueForKey:@"_delegate"];
+            if (mainAppController == nil)
+                return;
+            YTPlayerViewController *playerViewController = [mainAppController valueForKey:@"parentViewController"];
+            // Get the X position of this tap from arg1
+            UIGestureRecognizer *gestureRecognizer = (UIGestureRecognizer *)arg1;
+            CGPoint location = [gestureRecognizer locationInView:self];
+            CGFloat x = location.x;
+            // Get the associated proportion of time using scrubRangeForScrubX
+            double timestampFraction = [self scrubRangeForScrubX:x];
+            // Get the timestamp from the fraction
+            double timestamp = [mainAppController totalTime] * timestampFraction;
+            // Jump to the timestamp
+            [playerViewController seekToTime:timestamp];
         }
     %end
 %end
-
 
 %ctor {
     %init(YTTTS_Tweak);
 }
 
-
-// Helper methods for tweak settings
-void YTTTS_showSnackBar(NSString *text) {
-    YTHUDMessage *message = [%c(YTHUDMessage) messageWithText:text];
-    GOOHUDManagerInternal *manager = [%c(GOOHUDManagerInternal) sharedInstance];
-    [manager showMessageMainThread:message];
-}
-
-NSBundle *YTTTS_getTweakBundle() {
-    static NSBundle *bundle = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"YTTapToSeek" ofType:@"bundle"];
-        if (bundlePath)
-            bundle = [NSBundle bundleWithPath:bundlePath];
-        else // Rootless
-            bundle = [NSBundle bundleWithPath:ROOT_PATH_NS(@"/Library/Application Support/YTTapToSeek.bundle")];
-    });
-    return bundle;
-}

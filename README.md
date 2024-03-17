@@ -46,3 +46,26 @@ The target controller with the `seekToTime` method is in the `YTPlayerViewContro
 
 ~~Recall that I also needed the `YTInlinePlayerBarContainerView` class to get the `scrubRangeForScrubX` method. This is easily accessible from the `YTInlineScrubGestureView` through the `@property UIView *superview` instance variable.~~ This is now available in the class that I am hooking.
 
+#### Crashes
+
+I figured out why my code was crashing even though my hooked method makes no changes. Turns out that there's a change introduced in newer Youtube versions that crashes the settings menu that I was using. I referred to YTHoldForSpeed for this knowledge [here](https://github.com/joshuaseltzer/YTHoldForSpeed/commit/e4adb6b0cde87449c9f5bfe285719e0f0ecdfa91). I decided to remove the settings at this point since i plan on integrating it directly into uYouEnhanced
+
+#### More Notes
+
+I found out that the difference between square bracket notation and dot notation is that square bracket notation is handled
+at runtime, whereas dot notation is handled at compile time. To minimize bugs, I will try to switch it over to use dot
+notation. This means that I will need to have interfaces for every class that I am interacting with so that the
+methods and properties are defined at compile-time.
+
+Just kidding that isn't true. Turns out that dot notation vs bracket notation is quite strange. It seems that for accessing properties, it is advised to use dot notation for clarity. However, when calling any methods, it's required to use square bracket notation.
+
+For example:
+```
+[gestureRecognizer locationInView:self];
+```
+This line calls the `locationInView` method of the `gestureRecognizer` variable with 1 unnamed parameter called self.
+
+```
+YTMainAppVideoPlayerOverlayViewController *mainAppController = [self.delegate valueForKey:@"_delegate"];
+```
+This line creates a variable of name mainAppController of type `YTMainAppVideoPlayerOverlayViewController*`. It first accesses the `delegate` property of `self`, then it calls the `valueForKey` method on that object with the parameter `@"_delegate"`.
