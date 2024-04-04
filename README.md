@@ -69,3 +69,6 @@ This line calls the `locationInView` method of the `gestureRecognizer` variable 
 YTMainAppVideoPlayerOverlayViewController *mainAppController = [self.delegate valueForKey:@"_delegate"];
 ```
 This line creates a variable of name mainAppController of type `YTMainAppVideoPlayerOverlayViewController*`. It first accesses the `delegate` property of `self`, then it calls the `valueForKey` method on that object with the parameter `@"_delegate"`.
+
+#### Stuff
+This is a note from a bit later in development. I found out that the general idea is to use keyForValue for any IVar, and to use dot notation with @interface with @property declarations for any @property variable. 
